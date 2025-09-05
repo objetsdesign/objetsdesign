@@ -378,7 +378,7 @@ class RespartnerInherit(models.Model):
     )
     purchase_order_ids = fields.One2many(
         comodel_name="purchase.order",
-        inverse_name="vendor_id",
+        inverse_name="partner_id",
         string="Commandes fournisseur"
     )
     derniere_interaction_date = fields.Datetime(
