@@ -232,37 +232,29 @@
                                         </t>
                                     </td>
 
-                                    <td style="padding:6px;vertical-align:top;" class="quote-title_jaka">
-                                        <t t-if="line.product_id.name != 'Frais technique'">
+<td style="padding:6px;vertical-align:top;" class="quote-title_jaka">
+    <t t-if="line.product_id.name != 'Frais technique'">
+        <t t-esc="line.product_id.name or ''"/><br/>
+        <t t-esc="line.product_id.default_code or ''"/><br/>
+        <t t-esc="line.product_id.x_matiere or ''"/><br/>
+        <t t-esc="line.product_id.x_dimensions or ''"/><br/>
+        <t t-esc="line.product_id.x_marquage or ''"/><br/>
+        <t t-esc="line.product_id.x_conditionnement or ''"/><br/>
+        <t t-esc="line.product_id.x_etiquette or ''"/><br/>
+        <t t-esc="line.product_id.x_infos or ''"/><br/>
+        <t t-esc="line.delai_bat or ''"/><br/>
+        <t t-esc="line.delai_livraison or ''"/><br/>
+        <t t-if="line.product_id.image_1920">
+            <img t-att-src="image_data_uri(line.product_id.image_1920)"
+                 style="max-width:80px; max-height:80px; margin-top:5px;"/>
+        </t>
+    </t>
 
-                                        <t t-esc="line.product_id.name or ''"/>
-                                        <br/>
-                                        <t t-esc="line.product_id.default_code or ''"/>
-                                        <br/>
-                                        <t t-esc="line.product_id.x_matiere or ''"/>
-                                        <br/>
-                                        <t t-esc="line.product_id.x_dimensions or ''"/>
-                                        <br/>
-                                        <!--                    <t t-esc="line.name or ''"/><br/>-->
-                                        <t t-esc="line.product_id.x_marquage or ''"/>
-                                        <br/>
-                                        <t t-esc="line.product_id.x_conditionnement or ''"/>
-                                        <br/>
-                                        <t t-esc="line.product_id.x_etiquette or ''"/>
-                                        <br/>
-                                        <t t-esc="line.product_id.x_infos or ''"/>
-                                        <br/>
-                                          </t>
-                                        <t t-esc="line.delai_bat or ''"/>
-                                        <br/>
-
-                                        <t t-esc="line.delai_livraison or ''"/>
-                                        <br/>
-                                        <t t-if="line.product_id.image_1920">
-                                            <img t-att-src="image_data_uri(line.product_id.image_1920)"
-                                                 style="max-width:80px; max-height:80px; margin-top:5px;"/>
-                                        </t>
-                                    </td>
+    <!-- Si Frais technique → juste afficher le titre -->
+    <t t-if="line.product_id.name == 'Frais technique'">
+        Frais technique
+    </t>
+</td>
                                     <td style="padding:6px;text-align:center; vertical-align:top;"
                                         class="quote-title_jaka">
                                         <t t-esc="int(line.product_uom_qty) if line.product_uom_qty else ''"/>
@@ -311,38 +303,29 @@
                                         </t>
                                     </td>
 
-                                    <td style="padding:6px;vertical-align:top;" class="quote-title_jaka">
-                                       <t t-if="line.product_id.name != 'Frais technique'">
+<td style="padding:6px;vertical-align:top;" class="quote-title_jaka">
+    <t t-if="line.product_id.name != 'Frais technique'">
+        <t t-esc="line.product_id.name or ''"/><br/>
+        <t t-esc="line.product_id.default_code or ''"/><br/>
+        <t t-esc="line.product_id.x_matiere or ''"/><br/>
+        <t t-esc="line.product_id.x_dimensions or ''"/><br/>
+        <t t-esc="line.product_id.x_marquage or ''"/><br/>
+        <t t-esc="line.product_id.x_conditionnement or ''"/><br/>
+        <t t-esc="line.product_id.x_etiquette or ''"/><br/>
+        <t t-esc="line.product_id.x_infos or ''"/><br/>
+        <t t-esc="line.delai_bat or ''"/><br/>
+        <t t-esc="line.delai_livraison or ''"/><br/>
+        <t t-if="line.product_id.image_1920">
+            <img t-att-src="image_data_uri(line.product_id.image_1920)"
+                 style="max-width:80px; max-height:80px; margin-top:5px;"/>
+        </t>
+    </t>
 
-                                        <t t-esc="line.product_id.name or ''"/>
-                                        <br/>
-                                        <t t-esc="line.product_id.default_code or ''"/>
-                                        <br/>
-                                        <t t-esc="line.product_id.x_matiere or ''"/>
-                                        <br/>
-                                        <t t-esc="line.product_id.x_dimensions or ''"/>
-                                        <br/>
-                                        <!--                    <t t-esc="line.name or ''"/><br/>-->
-                                        <t t-esc="line.product_id.x_marquage or ''"/>
-                                        <br/>
-                                        <t t-esc="line.product_id.x_conditionnement or ''"/>
-                                        <br/>
-                                        <t t-esc="line.product_id.x_etiquette or ''"/>
-                                        <br/>
-                                        <t t-esc="line.product_id.x_infos or ''"/>
-                                        <br/>
-                                         </t>
-                                        <t t-esc="line.delai_bat or ''"/>
-                                        <br/>
-
-                                        <t t-esc="line.delai_livraison or ''"/>
-                                        <br/>
-                                        <t t-if="line.product_id.image_1920">
-                                            <img t-att-src="image_data_uri(line.product_id.image_1920)"
-                                                 style="max-width:80px; max-height:80px; margin-top:5px;"/>
-                                        </t>
-
-                                    </td>
+    <!-- Si Frais technique → juste afficher le titre -->
+    <t t-if="line.product_id.name == 'Frais technique'">
+        Frais technique
+    </t>
+</td>
                                     <td style="padding:6px;text-align:center; vertical-align:top;"
                                         class="quote-title_jaka">
                                         <t t-esc="int(line.product_uom_qty) if line.product_uom_qty else ''"/>
