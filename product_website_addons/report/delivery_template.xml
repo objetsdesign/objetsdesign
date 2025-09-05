@@ -91,9 +91,11 @@
             </tr>
         </t>
     </tbody>
+
 </table>
 
-
+ <br/>
+                    <t t-esc="o.note"/>
         </main>
     </template>
 
