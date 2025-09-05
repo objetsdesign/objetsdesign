@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="OD_invoices_without_payment" model="ir.actions.report">
+        <field name="name">OD Facture</field>
+        <field name="model">account.move</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">product_website_addons.print_facture_template</field>
+        <field name="report_file">product_website_addons.print_facture_template</field>
+        <field name="print_report_name">(object._get_report_base_filename())</field>
+        <field name="attachment"/>
+        <field name="binding_model_id" ref="account.model_account_move"/>
+        <field name="binding_type">report</field>
+        <field name="domain" eval="[('move_type', '!=', 'entry')]"/>
+    </record>
+
+    <template id="print_facture_template_document">
+        <t t-set="o" t-value="o.with_context(lang=o.partner_id.lang)"/>
+        <main style="font-size: 18px;">
+            <t t-set="company" t-value="o.company_id"/>
+            <div class="page" style="padding: 0px; margin: 0;">
+                <style>
+@font-face {
+    font-family: 'NotoSerifCustom';
+    src: url('/product_website_addons/static/src/font/noto-serif.regular.ttf') format('truetype');
+}
+.quote-title {
+    font-family: 'NotoSerifCustom', serif;
+    font-size: 14px;
+}
+@font-face {
+    font-family: 'PlusJakartaSansLight';
+    src: url('/product_website_addons/static/src/font/PlusJakartaSansLight.ttf') format('truetype');
+}
+.quote-title_jaka {
+    font-family: 'PlusJakartaSansLight';
+    font-size: 14px;
+}
+</style>
+
+  <!-- QUOTE uses the SAME row/col as the info block -->
+  <div class="row" style="margin:0;">
+    <div class="quote-title" style="background-color:#80c2d2; color:white; text-align:center;
+                               font-size:20px; font-weight:bold; padding:4px;width:100%;font-family: 'Noto Serif', serif !important;">
+      FACTURE
+    </div>
+  </div>
+
+  <!-- Contact & Company Info -->
+  <div class="row">
+    <!-- Left -->
+                        <div class="col-6"
+                             style="padding:7px; background-color:#f9f9f9; font-size:14px;font-family: 'Noto Serif', serif !important;">
+                            <p style="margin: 2px 0px 0px 0%;">
+                                <strong>Contact :</strong>
+                                <t t-esc="o.partner_id.name or ''"/>
+                            </p>
+                            <p style="margin: 2px 0px 0px 0%;">
+                                <strong>Email :</strong>
+                                <t t-esc="o.partner_id.email or ''"/>
+                            </p>
+                            <p style="margin: 2px 0px 0px 0%;">
+                                <strong>Quote No. :</strong>
+                                <t t-esc="o.name or ''"/>
+                            </p>
+                            <p style="margin: 2px 0px 0px 0%;">
+                                <strong>Customer Contact :</strong>
+                                <t t-esc="o.partner_id.phone or ''"/>
+                            </p>
+                            <p style="margin: 2px 0px 0px 0%;">
+                                <strong>Date :</strong>
+                                <t t-esc="o.invoice_date.strftime('%d/%m/%Y') if o.invoice_date else ''"/>
+                            </p>
+                        </div>
+
+    <!-- Right -->
+                        <div class="col-6"
+                             style="padding:7px;text-align:left !important;background-color:#f9f9f9; font-size:15px;">
+                            <p style="margin: 2px 0px 0px 62%; ">
+                                <t t-esc="o.company_id.name or ''"/>
+                            </p>
+                            <p style="margin: 2px 0px 0px 62%; ">
+                                <t t-esc="o.company_id.street or ''"/>,
+                                <t t-esc="o.company_id.city or ''"/>
+                                <t t-esc="o.company_id.zip or ''"/>
+                            </p>
+                            <p style="margin: 2px 0px 0px 62%; ">
+                                <t t-esc="o.company_id.country_id.name or ''"/>
+                            </p>
+                        </div>
+  </div>
+
+
+
+                                <table style="width: 100%;font-size: 14px;border:transparent !important;">
+                    <thead style="border:transparent !important;">
+                        <tr style="background-color: #80c2d2; color: white;">
+                            <th style="padding: 8px; text-align:left;font-weight:500px;"><b>Ref.</b></th>
+                            <th style="padding: 8px; text-align:left;font-weight:500px;"><b>Description</b></th>
+                            <th style="padding: 8px; text-align:center;font-weight:500px;"><b>Qty</b></th>
+                            <th style="padding: 8px; text-align:center;font-weight:500px;"><b>Unit Price</b></th>
+                            <th style="padding: 8px; text-align:center;font-weight:500px;"><b>Total HT€</b></th>
+                        </tr>
+                    </thead>
+                    <tbody style="border:transparent !important;">
+                        <t t-foreach="o.invoice_line_ids" t-as="line">
+                            <tr t-attf-class="{'background-color:#ffffff;' if loop.index % 2 == 0 else ''}">
+                                <td style="padding: 6px;">
+                                    <strong>Product</strong><br/>
+                                    <strong>Reference</strong><br/>
+                                    <strong>Matière</strong><br/>
+                                    <strong>Dimensions</strong><br/>
+                                    <strong>Détails</strong><br/>
+                                    <strong>Marquage</strong><br/>
+                                    <strong>Conditionnement</strong><br/>
+                                    <strong>Etiquette</strong><br/>
+                                    <strong>Infos</strong><br/>
+
+
+                                </td>
+                                                <td style="padding:6px;vertical-align:top;" class="quote-title_jaka">
+                    <t t-esc="line.product_id.name or ''"/><br/>
+                    <t t-esc="line.product_id.default_code or ''"/><br/>
+                    <t t-esc="line.product_id.x_matiere or ''"/><br/>
+                    <t t-esc="line.product_id.x_dimensions or ''"/><br/>
+<!--                    <t t-esc="line.name or ''"/><br/>-->
+                    <t t-esc="line.product_id.x_marquage or ''"/><br/>
+                    <t t-esc="line.product_id.x_conditionnement or ''"/><br/>
+                    <t t-esc="line.product_id.x_etiquette or ''"/><br/>
+                    <t t-esc="line.product_id.x_infos or ''"/><br/>
+                    <t t-if="line.product_id.image_1920">
+                        <img t-att-src="image_data_uri(line.product_id.image_1920)"
+                             style="max-width:80px; max-height:80px; margin-top:5px;"/>
+                    </t>
+                </td>
+
+                                <td style="padding: 6px; text-align:left;">
+                                    <t t-esc="int(line.quantity) if line.quantity else ''"/>
+                                </td>
+                                <td style="padding: 6px; text-align:center;">
+                                    <t t-esc="'%.2f' % line.price_unit"/>
+                                </td>
+                                <td style="padding: 6px; text-align:center;">
+                                    <t t-esc="'%.2f' % line.price_subtotal"/>
+                                </td>
+                            </tr>
+
+                        </t>
+
+
+                    </tbody>
+                </table>
+                <table style="width:45%; margin-left:auto; border:transparent !important; font-size:10px;">
+    <tbody>
+      <tr>
+        <td style="text-align:left;padding-right:25px;" class="quote-title_jaka">
+          Montant HT :
+        </td>
+        <td style="text-align:right; padding-right:30px;" class="quote-title">
+          <t t-esc="'{:,.2f} €'.format(o.amount_untaxed)"/>
+        </td>
+      </tr>
+      <tr>
+        <td style="text-align:left;padding-right:25px;" class="quote-title_jaka">
+          TVA 20% :
+        </td>
+        <td style="text-align:right; padding-right:39px;" class="quote-title">
+          <t t-esc="'{:,.2f} €'.format(o.amount_tax)"/>
+        </td>
+      </tr>
+      <tr>
+        <td style="text-align:left;padding-right:25px;" class="quote-title_jaka">
+          Total TTC :
+        </td>
+        <td style="text-align:right; padding-right:30px;" class="quote-title">
+          <t t-esc="'{:,.2f} €'.format(o.amount_total)"/>
+        </td>
+      </tr>
+    </tbody>
+</table>
+
+                <br/>
+                <div class="quote-title" style="background-color: #80c2d2; color: white; text-align: center; padding: 6px; font-size: 16px;margin-top:20px;">
+                    INFORMATION
+                </div>
+<br/>
+<div style="font-size:13px; padding:10px;" class="quote-title">
+     <strong>Livraison :</strong> Franco 1 point France métropolitaine<br/>
+            <strong>Règlement :</strong> <t t-esc="o.invoice_payment_term_id.name or 'Acompte à réception'"/><br/>
+            <strong>N° commande :</strong> <t t-esc="o.invoice_origin or ''"/><br/>
+            <strong>Émetteur :</strong> <t t-esc="o.invoice_user_id.name or ''"/><br/>
+            <strong>N° Dossier :</strong> <t t-esc="o.name or ''"/>
+                                <div class="quote-title" style="background-color: #80c2d2; color: white; text-align: center; padding: 6px; font-size: 16px;margin-top:20px;">
+                    Informations bancaires
+                </div>
+<br/>
+ <strong>Banque :</strong> <t t-esc="o.company_id.partner_id.bank_ids and o.company_id.partner_id.bank_ids[0].bank_id.name or ''"/><br/>
+            <strong>N° de Compte :</strong> <t t-esc="o.company_id.partner_id.bank_ids and o.company_id.partner_id.bank_ids[0].acc_number or ''"/><br/>
+         <strong>BIC :</strong> <t t-esc="o.company_id.partner_id.bank_ids and o.company_id.partner_id.bank_ids[0].bank_id.bic or ''"/><br/>
+    <strong>Bénéficiaire :</strong> <t t-esc="o.company_id.name or ''"/></div>
+
+
+            </div>
+        </main>
+<!--        <t t-call="product_website_addons.exemple_footer_invoice"/>-->
+    </template>
+
+<!--    <template id="exemple_footer_invoice">-->
+<!--        <t t-extend="web.external_layout_footer">-->
+<!--            <t t-jquery="div.footer" t-operation="replace">-->
+<!--                <div class="footer" style="width: 100%; font-size: 12px;">-->
+<!--                    <table style="width: 100%; border-collapse: collapse; border: 1px solid white;">-->
+<!--                        <tr>-->
+<!--                            <td style="text-align: left; vertical-align: middle; padding-left: 10px; width: 70%;">-->
+<!--                                <t t-raw="o.invoice_footer"/>-->
+<!--                            </td>-->
+<!--                            <td style="text-align: right; vertical-align: middle; padding-right: 10px; width: 30%;">-->
+<!--                                <img t-att-src="'/product_website_addons/static/src/img/logo_footer.png'"-->
+<!--                                     style="max-height: 50px; width: auto;"/>-->
+<!--                            </td>-->
+<!--                        </tr>-->
+<!--                    </table>-->
+<!--                </div>-->
+<!--            </t>-->
+<!--        </t>-->
+<!--    </template>-->
+
+
+    <template id="print_facture_template">
+        <t t-call="web.external_layout">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="product_website_addons.print_facture_template_document"
+                   t-lang="o.partner_id.lang or 'fr_FR'"/>
+            </t>
+        </t>
+    </template>
+
+
+</odoo>

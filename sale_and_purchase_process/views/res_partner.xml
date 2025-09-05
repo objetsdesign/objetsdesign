@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_partner_form_inherit_commerciaux" model="ir.ui.view">
+    <field name="name">res.partner.form.inherit.commerciaux</field>
+    <field name="model">res.partner</field>
+    <!-- Héritage de la vraie vue formulaire du partenaire -->
+    <field name="inherit_id" ref="base.view_partner_form"/>
+    <field name="arch" type="xml">
+        <!-- On cible le notebook existant et on ajoute à l'intérieur -->
+       <xpath expr="//page[@name='contact_addresses']/field[@name='child_ids']/kanban/templates/t[@t-name='card']/main" position="inside">
+    <div class="mt-1">
+        <field name="is_commercial" widget="boolean_toggle"/>
+    </div>
+</xpath>
+
+
+        <xpath expr="//notebook" position="inside">
+    <page string="Commerciaux">
+        <field name="commercial_ids" context="{'default_parent_id': id}">
+            <list editable="bottom">
+                <field name="contact_name"/>
+                <field name="function"/>
+                <field name="phone"/>
+                <field name="email"/>
+            </list>
+            <form>
+                <group>
+                    <field name="contact_name"/>
+                    <field name="function"/>
+                    <field name="phone"/>
+                    <field name="email"/>
+                </group>
+            </form>
+        </field>
+    </page>
+</xpath>
+
+
+    </field>
+</record>
+
+<!--   <record model="ir.ui.view" id="res_partner_kanban_view_inherit_status">-->
+<!--    <field name="name">res.partner.kanban.inherit.status</field>-->
+<!--    <field name="model">res.partner</field>-->
+<!--    <field name="inherit_id" ref="base.res_partner_kanban_view"/>-->
+<!--    <field name="arch" type="xml">-->
+<!--         <xpath expr="//kanban" position="inside">-->
+<!--            <field name="kanban_status"/>-->
+<!--        </xpath>-->
+
+<!--       <xpath expr="//footer/div" position="inside">-->
+<!--            <t t-if="record.kanban_status.raw_value == 'red'">-->
+<!--                <span class="o_status_circle o_status_red" title="Inactif"></span>-->
+<!--            </t>-->
+<!--            <t t-if="record.kanban_status.raw_value == 'green'">-->
+<!--                <span class="o_status_circle o_status_green" title="Actif"></span>-->
+<!--            </t>-->
+<!--        </xpath>-->
+<!--    </field>-->
+<!--</record>-->
+
+<!--<record id="view_partner_tree_inherit_status" model="ir.ui.view">-->
+<!--        <field name="name">res.partner.tree.inherit.status</field>-->
+<!--        <field name="model">res.partner</field>-->
+<!--        <field name="inherit_id" ref="base.view_partner_tree"/>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <xpath expr="//list/field[@name='company_id']" position="after">-->
+<!--                <field name="kanban_status"-->
+<!--                       widget="badge"-->
+<!--                       options="{'terminology': {'green': 'Actif', 'red': 'Inactif'}}"/>-->
+<!--            </xpath>-->
+<!--        </field>-->
+<!--    </record>-->
+<!--<record id="view_res_partner_filter_inherit" model="ir.ui.view">-->
+<!--        <field name="name">res.partner.search.inherit.status</field>-->
+<!--        <field name="model">res.partner</field>-->
+<!--        <field name="inherit_id" ref="base.view_res_partner_filter"/>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <xpath expr="//filter[@name='inactive']" position="after">-->
+<!--                <filter string="Actifs" name="active_clients"-->
+<!--                        domain="[('kanban_status', '=', 'green')]"/>-->
+<!--                <filter string="Inactifs" name="inactive_clients"-->
+<!--                        domain="[('kanban_status', '=', 'red')]"/>-->
+<!--            </xpath>-->
+<!--        </field>-->
+<!--    </record>-->
+
+
+</odoo>

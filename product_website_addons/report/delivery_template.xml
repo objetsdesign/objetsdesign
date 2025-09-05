@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="delivery_template" model="ir.actions.report">
+        <field name="name">OD bon de livraison</field>
+        <field name="model">stock.picking</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">product_website_addons.print_delivery_template</field>
+        <field name="report_file">product_website_addons.print_delivery_template</field>
+        <field name="print_report_name">'OD bon de livraison - %s - %s' % (object.partner_id.name or '', object.name)
+        </field>
+        <field name="binding_model_id" ref="stock.model_stock_picking"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="print_delivery_template_document">
+        <t t-set="o" t-value="o.with_context(lang=o.partner_id.lang)"/>
+        <main style="font-size: 18px;">
+            <t t-set="company" t-value="o.company_id"/>
+            <div class="page" style="padding: 0px; margin: 0;">
+                 <div class="row" style="margin:0;">
+                        <div class="quote-title" style="background-color:#80c2d2; color:white; text-align:center;
+                               font-size:20px;z-index:99999 !important; font-weight:bold; padding:4px;width:100%;">
+                            BON DE LIVRAISON N°
+                            <t t-esc="o.name"/>
+                        </div>
+                 </div>
+                <div class="row" style="margin:0;width:100%;">
+
+                    <div class="col-6"
+                         style="padding:7px; background-color:#f9f9f9; font-size:16px;font-family: 'Noto Serif', serif !important;">
+                        <p style="margin: 2px 0px 0px 0%;">
+                            <strong>Date de livraison Estimée :</strong>
+                            <t t-esc="o.scheduled_date or ''"/>
+                        </p>
+                        <p style="margin: 2px 0px 0px 0%;">
+                            <strong>Client :</strong>
+                            <t t-esc="o.partner_id.name or ''"/>
+                        </p>
+                        <p style="margin: 2px 0px 0px 0%;">
+                            <strong>N° Dossier :</strong>
+                            <t t-esc="o.name or ''"/>
+                        </p>
+                        <p style="margin: 2px 0px 0px 0%;">
+                            <strong>N°Commande:</strong>
+                            <t t-esc="o.origin or ''"/>
+                        </p>
+                        <p style="margin: 2px 0px 0px 0%;">
+                            <strong>Marquage Carton. Shipping mark :</strong>
+                            <t t-esc="o.origin or ''"/>
+                        </p>
+                    </div>
+                    <div class="col-6" style="padding:7px;text-align:left !important;background-color:#f9f9f9; font-size:15px;">
+
+    <p style="margin: 0px 0px 0px 62%; "><t t-esc="o.partner_id.name or ''"/></p>
+    <p style="margin: 0px 0px 0px 62%; "><t t-esc="o.partner_id.street or ''"/></p>
+    <p style="margin: 0px 0px 0px 62%; "><t t-esc="o.partner_id.street2 or ''"/></p>
+    <p style="margin: 0px 0px 0px 62%; "><t t-esc="o.partner_id.zip or ''"/> <t t-esc="o.partner_id.city or ''"/></p>
+    <p style="margin: 0px 0px 0px 62%; "> <t t-esc="o.partner_id.country_id.name or ''"/></p>
+                    </div>
+
+                </div>
+            </div>
+
+
+                <table style="width:100%; font-size:16px; border:transparent !important;">
+    <thead>
+        <tr style="background-color:#80c2d2; color:white; font-weight:bold; text-align:center;">
+            <th style="padding: 5px;">REF. Shipping mark</th>
+            <th style="padding: 5px;">DÉSIGNATION</th>
+            <th style="padding: 5px;">QTÉ</th>
+        </tr>
+    </thead>
+    <tbody>
+        <t t-foreach="o.move_ids_without_package" t-as="line">
+            <tr>
+                <!-- Nom du produit -->
+                <td style="padding: 5px;">
+                    <t t-esc="line.product_id.default_code or ''"/><t t-esc="line.product_id.name or ''"/>
+                </td>
+
+                <!-- Désignation (description de la ligne) -->
+                <td style="padding: 5px;">
+                    <t t-esc="line.name or ''"/>
+                </td>
+
+                <!-- Quantité demandée -->
+                <td style="padding: 5px; text-align:center;">
+                    <t t-esc="line.product_uom_qty"/>
+                    <t t-esc="line.product_uom.name"/>
+                </td>
+            </tr>
+        </t>
+    </tbody>
+</table>
+
+
+        </main>
+    </template>
+
+
+    <template id="print_delivery_template">
+        <t t-call="web.external_layout">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="product_website_addons.print_delivery_template_document"
+                   t-lang="o.partner_id.lang or 'fr_FR'"/>
+            </t>
+        </t>
+    </template>
+
+
+</odoo>

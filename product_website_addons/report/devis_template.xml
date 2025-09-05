@@ -1,0 +1,497 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="devis_template" model="ir.actions.report">
+        <field name="name">OD QUOTE</field>
+        <field name="model">sale.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">product_website_addons.print_devis_template</field>
+        <field name="report_file">product_website_addons.print_devis_template</field>
+        <field name="binding_model_id" ref="sale.model_sale_order"/>
+        <field name="binding_type">report</field>
+        <field name="print_report_name">'OD Devis - %s' % (object.name)</field>
+    </record>
+    <template id="custom_standard_layout" inherit_id="web.external_layout_standard">
+        <!-- Customise the Header -->
+        <xpath expr="//div[contains(@t-attf-class, 'header o_company_')]" position="replace">
+            <div t-attf-class="header o_company_#{company.id}_layout" class="quote-title"
+                 style="background-color:transparent !important;">
+                <style>
+                    @font-face {
+                    font-family: 'NotoSerifCustom';
+                    src: url('/product_website_addons/static/src/font/noto-serif.regular.ttf') format('truetype');
+                    }
+                    .quote-title {
+                    font-family: 'NotoSerifCustom', serif;
+                    font-size: 14px;
+
+                    }
+                </style>
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <!-- Logo à gauche -->
+                    <div class="company-logo" style="width: 50%; text-align: left;margin-top:65px;">
+                        <img t-if="company.logo" class="o_company_logo_small" t-att-src="image_data_uri(company.logo)"
+                             alt="Logo" style="max-height: 35px;"/>
+                    </div> <!-- Détails à droite -->
+                    <div class="company-details"
+                         style="margin-right:32px !important;margin-top:65px;"> <!-- décale vers la gauche -->
+                        <!-- Nom -->
+                        <t t-if="company.name">
+                            <h2 class="company-name"
+                                style="font-size:15px; color:#000; margin:0;">
+                                <t t-esc="company.name"/>
+                            </h2>
+                        </t>
+
+                        <!-- Adresse -->
+                        <t t-if="company.street or company.city or company.zip">
+                            <p style="margin:0;">
+                                <span t-esc="company.street"/>
+                                <t t-if="company.city">,
+                                    <t t-esc="company.city"/>
+                                </t>
+                                <t t-if="company.zip">,
+                                    <t t-esc="company.zip"/>
+                                </t>
+                                <br/>
+                                <h6 style="margin:0;">75017 Paris - France</h6>
+                            </p>
+                        </t>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+        <xpath expr="//div[contains(@class, 'o_footer')]" position="replace">
+            @font-face {
+            font-family: 'NotoSerifCustom';
+            src: url('/product_website_addons/static/src/font/noto-serif.regular.ttf') format('truetype');
+            }
+            .quote-title {
+            font-family: 'NotoSerifCustom', serif;
+            font-size: 14px;
+
+            }
+            <div class="custom_footer row"
+                 style="width:100%; font-size:11px; color:#555; align-items:center;">
+
+                <!-- Texte à gauche avec trait vertical -->
+                <div class="col-8"
+                     style="text-align:left; font-size:15px; color:#000 !important;
+                    font-weight:700 !important; border-left:4px solid #80c2d2;
+                    padding-left:12px; padding-right:15px;">
+                    <p class="quote-title">
+                        OBJETS DESIGN SAS - 6 rue d’Armaillé 75017 - Paris France
+                        <br/>
+                        Capital de 170 800 € - RCS: 881930036 R.C.S PARIS - SIRET: 881930036 00010
+                        <br/>
+                        Email: info@objetsdesign.com - TVA INTRACOM FR: 78 881930036
+                    </p>
+                </div>
+
+                <!-- Logo à droite -->
+                <div class="col-4" style="text-align:right; padding-left:15px;">
+                    <img t-att-src="'/product_website_addons/static/src/img/logo_footer.png'"
+                         style="max-height:70px;"/>
+                </div>
+            </div>
+        </xpath>
+
+    </template>
+    <template id="print_devis_template_document">
+        <t t-set="o" t-value="o.with_context(lang=o.partner_id.lang)"/>
+        <main style="font-size: 16px;color:#333;">
+            <t t-set="company" t-value="o.company_id"/>
+            <div class="page">
+
+                <style>
+                    @font-face {
+                    font-family: 'NotoSerifCustom';
+                    src: url('/product_website_addons/static/src/font/noto-serif.regular.ttf') format('truetype');
+                    }
+                    .quote-title {
+                    font-family: 'NotoSerifCustom', serif;
+                    font-size: 14px;
+
+                    }
+                    @font-face {
+                    font-family: 'PlusJakartaSansVariableFont_wght';
+                    src: url('/product_website_addons/static/src/font/PlusJakartaSansVariableFont_wght.ttf') format('truetype');
+                    }
+                    .quote-title_jaka {
+                    font-family: 'PlusJakartaSansVariableFont_wght';
+                    font-size: 14px;
+
+                    }
+                </style>
+
+                <!-- Wrapper to keep both blocks aligned -->
+                <div style="width:100%;">
+
+                    <!-- QUOTE uses the SAME row/col as the info block -->
+                    <div class="row" style="margin:0;">
+                        <div class="quote-title" style="background-color:#80c2d2; color:white; text-align:center;
+                               font-size:20px;z-index:99999 !important; font-weight:bold; padding:4px;width:100%;">
+                            QUOTE
+                        </div>
+                    </div>
+
+                    <!-- Contact & Company Info -->
+                    <div class="row" style="margin:0;width:100%;">
+                        <!-- Left -->
+                        <div class="col-6"
+                             style="padding:7px; background-color:#f9f9f9; font-size:14px;font-family: 'Noto Serif', serif !important;">
+                            <p style="margin: 2px 0px 0px 0%;">
+                                <strong>Contact :</strong>
+                                <t t-esc="o.partner_id.name or ''"/>
+                            </p>
+                            <p style="margin: 2px 0px 0px 0%;">
+                                <strong>Email :</strong>
+                                <t t-esc="o.partner_id.email or ''"/>
+                            </p>
+                            <p style="margin: 2px 0px 0px 0%;">
+                                <strong>Quote No. :</strong>
+                                <t t-esc="o.name or ''"/>
+                            </p>
+                            <p style="margin: 2px 0px 0px 0%;">
+                                <strong>Customer Contact :</strong>
+                                <t t-esc="o.partner_id.phone or ''"/>
+                            </p>
+                            <p style="margin: 2px 0px 0px 0%;">
+                                <strong>Date :</strong>
+                                <t t-esc="o.date_order.strftime('%d/%m/%Y') if o.date_order else ''"/>
+                            </p>
+                        </div>
+
+                        <!-- Right -->
+                        <div class="col-6"
+                             style="padding:7px;text-align:left !important;background-color:#f9f9f9; font-size:15px;">
+                            <p style="margin: 2px 0px 0px 62%; ">
+                                <t t-esc="o.company_id.name or ''"/>
+                            </p>
+                            <p style="margin: 2px 0px 0px 62%; ">
+                                <t t-esc="o.company_id.street or ''"/>,
+                                <t t-esc="o.company_id.city or ''"/>
+                                <t t-esc="o.company_id.zip or ''"/>
+                            </p>
+                            <p style="margin: 2px 0px 0px 62%; ">
+                                <t t-esc="o.company_id.country_id.name or ''"/>
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+
+                <table style="width:100%; font-size:10px; border:transparent !important;">
+                    <thead style="border:transparent !important;">
+                        <tr style="background-color:#80c2d2; color:white; text-align:center;">
+                            <th style="padding:6px; width:20%;" class="quote-title">Ref.</th>
+                            <th style="padding:6px; width:30%;" class="quote-title">Description</th>
+                            <th style="padding:6px; width:10%;" class="quote-title">Qty</th>
+                            <th style="padding:6px; width:20%;" class="quote-title">Unit Price</th>
+                            <th style="padding:6px; width:20%;" class="quote-title">Total HT€</th>
+                        </tr>
+                    </thead>
+
+                    <tbody style="border:transparent !important;">
+                        <!-- Lignes cochées -->
+                        <t t-set="checked_lines" t-value="o.order_line.filtered(lambda l: l.print_in_quote)"/>
+                        <t t-set="has_checked" t-value="bool(checked_lines)"/>
+
+                        <!-- Boucle sur toutes les lignes -->
+                        <t t-foreach="o.order_line" t-as="line">
+                            <!-- Si au moins un produit est coché, n'affiche que les cochés -->
+                            <t t-if="has_checked and line.print_in_quote">
+                                <tr>
+
+                                    <td style="padding:6px;vertical-align:top;height:20px !important;" class="quote-title_jaka">
+                                        <strong>
+                                            <t t-if="line.product_id.name == 'Frais technique'">Frais technique</t>
+                                            <t t-else="">Produit :</t>
+                                        </strong>
+                                        <t t-if="line.product_id.name != 'Frais technique'">
+
+                                            <strong>Référence :</strong>
+                                            <br/>
+                                            <strong>Matière :</strong>
+                                            <br/>
+                                            <strong>Dimensions :</strong>
+                                            <br/>
+                                            <!--                    <strong>Détails :</strong><br/>-->
+                                            <strong>Marquage :</strong>
+                                            <br/>
+                                            <strong>Conditionnement :</strong>
+                                            <br/>
+                                            <strong>Etiquette :</strong>
+                                            <br/>
+                                            <strong>Infos :</strong>
+                                            <br/>
+                                            <strong>Délai Bat :</strong>
+                                            <br/>
+                                            <strong>Délai Livraison :</strong>
+                                            <br/>
+                                            <strong>Image Produit :</strong>
+                                        </t>
+                                    </td>
+
+                                    <td style="padding:6px;vertical-align:top;" class="quote-title_jaka">
+                                        <t t-if="line.product_id.name != 'Frais technique'">
+
+                                        <t t-esc="line.product_id.name or ''"/>
+                                        <br/>
+                                        <t t-esc="line.product_id.default_code or ''"/>
+                                        <br/>
+                                        <t t-esc="line.product_id.x_matiere or ''"/>
+                                        <br/>
+                                        <t t-esc="line.product_id.x_dimensions or ''"/>
+                                        <br/>
+                                        <!--                    <t t-esc="line.name or ''"/><br/>-->
+                                        <t t-esc="line.product_id.x_marquage or ''"/>
+                                        <br/>
+                                        <t t-esc="line.product_id.x_conditionnement or ''"/>
+                                        <br/>
+                                        <t t-esc="line.product_id.x_etiquette or ''"/>
+                                        <br/>
+                                        <t t-esc="line.product_id.x_infos or ''"/>
+                                        <br/>
+                                          </t>
+                                        <t t-esc="line.delai_bat or ''"/>
+                                        <br/>
+
+                                        <t t-esc="line.delai_livraison or ''"/>
+                                        <br/>
+                                        <t t-if="line.product_id.image_1920">
+                                            <img t-att-src="image_data_uri(line.product_id.image_1920)"
+                                                 style="max-width:80px; max-height:80px; margin-top:5px;"/>
+                                        </t>
+                                    </td>
+                                    <td style="padding:6px;text-align:center; vertical-align:top;"
+                                        class="quote-title_jaka">
+                                        <t t-esc="int(line.product_uom_qty) if line.product_uom_qty else ''"/>
+                                    </td>
+                                    <td style="padding:6px;text-align:center; vertical-align:top;"
+                                        class="quote-title_jaka">
+                                        <t t-esc="'%.2f' % line.price_unit"/>
+                                    </td>
+                                    <td style="padding:6px;text-align:center; vertical-align:top;"
+                                        class="quote-title_jaka">
+                                        <t t-esc="'%.2f' % line.price_subtotal"/>
+                                    </td>
+                                </tr>
+                            </t>
+
+                            <!-- Si aucun produit n'est coché, n'affiche que tous les produits sans totaux -->
+                            <t t-if="not has_checked">
+                                <tr>
+
+                                    <td style="padding:6px;vertical-align:top;" class="quote-title_jaka">
+                                        <strong>
+                                            <t t-if="line.product_id.name == 'Frais technique'">Frais technique</t>
+                                            <t t-else="">Produit :</t>
+                                        </strong>
+                                        <t t-if="line.product_id.name != 'Frais technique'">
+                                            <strong>Référence :</strong>
+                                            <br/>
+                                            <strong>Matière :</strong>
+                                            <br/>
+                                            <strong>Dimensions :</strong>
+                                            <br/>
+                                            <!--                    <strong>Détails :</strong><br/>-->
+                                            <strong>Marquage :</strong>
+                                            <br/>
+                                            <strong>Conditionnement :</strong>
+                                            <br/>
+                                            <strong>Etiquette :</strong>
+                                            <br/>
+                                            <strong>Infos :</strong>
+                                            <br/>
+                                            <strong>Délai Bat :</strong>
+                                            <br/>
+                                            <strong>Délai Livraison :</strong>
+                                            <br/>
+                                            <strong>Image Produit :</strong>
+                                        </t>
+                                    </td>
+
+                                    <td style="padding:6px;vertical-align:top;" class="quote-title_jaka">
+                                       <t t-if="line.product_id.name != 'Frais technique'">
+
+                                        <t t-esc="line.product_id.name or ''"/>
+                                        <br/>
+                                        <t t-esc="line.product_id.default_code or ''"/>
+                                        <br/>
+                                        <t t-esc="line.product_id.x_matiere or ''"/>
+                                        <br/>
+                                        <t t-esc="line.product_id.x_dimensions or ''"/>
+                                        <br/>
+                                        <!--                    <t t-esc="line.name or ''"/><br/>-->
+                                        <t t-esc="line.product_id.x_marquage or ''"/>
+                                        <br/>
+                                        <t t-esc="line.product_id.x_conditionnement or ''"/>
+                                        <br/>
+                                        <t t-esc="line.product_id.x_etiquette or ''"/>
+                                        <br/>
+                                        <t t-esc="line.product_id.x_infos or ''"/>
+                                        <br/>
+                                         </t>
+                                        <t t-esc="line.delai_bat or ''"/>
+                                        <br/>
+
+                                        <t t-esc="line.delai_livraison or ''"/>
+                                        <br/>
+                                        <t t-if="line.product_id.image_1920">
+                                            <img t-att-src="image_data_uri(line.product_id.image_1920)"
+                                                 style="max-width:80px; max-height:80px; margin-top:5px;"/>
+                                        </t>
+
+                                    </td>
+                                    <td style="padding:6px;text-align:center; vertical-align:top;"
+                                        class="quote-title_jaka">
+                                        <t t-esc="int(line.product_uom_qty) if line.product_uom_qty else ''"/>
+                                    </td>
+                                    <td style="padding:6px;text-align:center; vertical-align:top;"
+                                        class="quote-title_jaka">
+                                        <t t-esc="'%.2f' % line.price_unit"/>
+                                    </td>
+                                    <td style="padding:6px;text-align:center; vertical-align:top;"
+                                        class="quote-title_jaka">
+                                        <t t-esc="'%.2f' % line.price_subtotal"/>
+                                    </td>
+                                </tr>
+                            </t>
+                        </t>
+
+
+
+                    </tbody>
+
+                </table>
+<table style="width:45%; margin-left:auto; border:transparent !important; font-size:10px;">
+  <t t-if="has_checked">
+    <t t-set="amount_untaxed" t-value="sum(l.price_subtotal for l in checked_lines)"/>
+    <t t-set="amount_tax" t-value="sum(l.price_total - l.price_subtotal for l in checked_lines)"/>
+    <t t-set="amount_total" t-value="sum(l.price_total for l in checked_lines)"/>
+    <tbody>
+      <tr>
+        <td style="text-align:left;" class="quote-title_jaka">
+          Montant HT :
+        </td>
+        <td style="text-align:right; padding-right:38px;" class="quote-title">
+          <t t-esc="'{:,.2f} €'.format(amount_untaxed)"/>
+        </td>
+      </tr>
+      <tr>
+        <td style="text-align:left;" class="quote-title_jaka">
+          TVA 20% :
+        </td>
+        <td style="text-align:right; padding-right:47px;" class="quote-title">
+          <t t-esc="'{:,.2f} €'.format(amount_tax)"/>
+        </td>
+      </tr>
+      <tr>
+        <td style="text-align:left;" class="quote-title_jaka">
+          Total TTC :
+        </td>
+        <td style="text-align:right; padding-right:38px;" class="quote-title">
+          <t t-esc="'{:,.2f} €'.format(amount_total)"/>
+        </td>
+      </tr>
+    </tbody>
+  </t>
+</table>
+                     <!-- Totaux : uniquement si au moins un produit est coché -->
+                <div class="quote-title"
+                     style="background-color: #80c2d2; color: white; text-align: center; padding: 6px; font-size: 16px; margin-top:20px;">
+                    INFORMATION
+                </div>
+                <br/>
+                <div style="font-size:13px; padding:10px;" class="quote-title">
+                    <p style="margin: 0px 0px 0px 0px; ">
+                        <strong class="quote-title">Document technique :</strong>
+                        <t t-esc="o.tech_doc" class="quote-title_jaka"/>
+                    </p>
+                    <p style="margin: 0px 0px 0px 0px; ">
+                        <strong class="quote-title">Livraison :</strong>
+                        <t t-esc="o.delivery_info" class="quote-title_jaka"/>
+                    </p>
+                    <p style="margin: 0px 0px 0px 0px; ">
+                        <strong class="quote-title">Règlement :</strong>
+                        <t t-esc="o.payment_info" class="quote-title_jaka"/>
+                    </p>
+                    <p style="margin: 0px 0px 0px 0px; ">
+                        <strong class="quote-title">Validité :</strong>
+                        <t t-esc="o.validity_info" class="quote-title_jaka"/>
+                    </p>
+                    <p style="margin: 0px 0px 0px 0px; ">
+                        <strong class="quote-title">Délai :</strong>
+                        <t t-esc="o.delay_info" class="quote-title_jaka"/>
+                    </p>
+                    <p style="margin: 0px 0px 0px 0px; ">
+                        <strong class="quote-title">Inspections :</strong>
+                        <t t-esc="o.inspection_info" class="quote-title_jaka"/>
+                    </p>
+                    <p style="margin: 0px 0px 0px 0px; ">
+                        <strong class="quote-title">Adresse Chine :</strong>
+                        <t t-esc="o.address_china" class="quote-title_jaka"/>
+                    </p>
+                    <p style="margin: 0px 0px 0px 0px; ">
+                        <strong class="quote-title">Adresse Tunisie :</strong>
+                        <t t-esc="o.address_tunisia" class="quote-title_jaka"/>
+                    </p>
+                </div>
+                <div t-if="o.signature" style="margin-top:30px; text-align:right;">
+                    <div>
+                        <strong>Signature</strong>
+                    </div>
+                    <div>
+                        <img t-att-src="image_data_uri(o.signature)"
+                             style="max-height: 4cm; max-width: 8cm; margin-top:5px;"/>
+                    </div>
+                    <div>
+                        <span t-field="o.signed_by"/>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <!--        <t t-call="product_website_addons.custom_footer_02"/>-->
+    </template>
+
+    <!--<template id="custom_footer_02" inherit_id="web.external_layout_footer">-->
+    <!--<data inherit_id="web.external_layout_footer">-->
+    <!--    <xpath expr="//div[contains(@class, 'o_standard_footer')]" position="replace">-->
+    <!--        <div style="width: 100%; font-size: 11px; color:#555; margin-top:15px;display: flex; justify-content: space-between; align-items: center;">-->
+    <!--            <div style="text-align: left; font-size:14px; color:#000 !important;font-weight:700 !important; line-height: 1.8; max-width: 70%;">-->
+    <!--                OBJETS DESIGN SAS - 6 rue d’Armaillé 75017 - Paris France-->
+    <!--                <br/>-->
+    <!--                Capital de 170 800 € - RCS: 881930036 R.C.S PARIS - SIRET: 881930036 00010-->
+    <!--                <br/>-->
+    <!--                Email: info@objetsdesign.com - TVA INTRACOM FR: 78 881930036-->
+    <!--            </div>-->
+
+    <!--            <div style="text-align: right; max-width: 30%;">-->
+    <!--                <img t-att-src="'/product_website_addons/static/src/img/logo_footer.png'" style="max-height: 60px;"/>-->
+    <!--            </div>-->
+    <!--        </div>-->
+    <!--    </xpath>-->
+    <!--</data>-->
+    <!--</template>-->
+    <template id="print_devis_template">
+        <t t-call="web.external_layout">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="product_website_addons.print_devis_template_document" t-lang="o.partner_id.lang or 'fr_FR'"/>
+            </t>
+        </t>
+    </template>
+    <template id="sale_order_portal_sidebar_custom" inherit_id="sale.sale_order_portal_template">
+        <xpath expr="//a[@id='print_invoice_report']" position="attributes">
+            <attribute name="t-att-href">"/report/pdf/product_website_addons.print_devis_template/" +
+                str(sale_order.id)
+            </attribute>
+        </xpath>
+    </template>
+    <template id="sale_order_portal_content_inherit" inherit_id="sale.sale_order_portal_content">
+        <xpath expr="//section[@id='terms']/em" position="replace">
+            <em>
+                <t t-esc="sale_order.with_context(lang=request.env.context.get('lang')).note or ''"/>
+            </em>
+        </xpath>
+    </template>
+</odoo>

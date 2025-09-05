@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="add_custom_js" inherit_id="web.assets_frontend">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/product_website_addons/static/src/js/product_sku_update.js"/>
+        </xpath>
+    </template>
+</odoo>
+

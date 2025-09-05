@@ -1,0 +1,17 @@
+.o_status_circle {
+    display: inline-block;
+    width: 20px;        /* taille du cercle */
+    height: 20px;
+    border-radius: 50%; /* cercle parfait */
+    margin-left: 8px;   /* petit espace */
+}
+
+.o_status_red {
+    background-color: #dc3545; /* rouge Bootstrap */
+    box-shadow: 0 0 6px rgba(220, 53, 69, 0.6);
+}
+
+.o_status_green {
+    background-color: #28a745; /* vert Bootstrap */
+    box-shadow: 0 0 6px rgba(40, 167, 69, 0.6);
+}

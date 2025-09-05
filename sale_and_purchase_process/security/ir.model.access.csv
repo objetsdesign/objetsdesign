@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_sale_bom_wizard,sale.bom.wizard,model_sale_bom_wizard,base.group_user,1,1,1,1
+access_sale_partner_commercial,sale.partner.commercial,model_partner_commercial,base.group_user,1,1,1,1
+

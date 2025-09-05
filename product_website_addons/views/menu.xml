@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem
+            id="product_website_addons_menu"
+            name="product_website_addons"
+            web_icon="product_website_addons,static/description/module_icon.png"
+            sequence="26"/>
+</odoo>

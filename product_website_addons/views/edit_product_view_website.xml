@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="accordion_more_information_inherit" inherit_id="website_sale.accordion_more_information">
+        <xpath expr="//button[@class='accordion-button collapsed fw-medium']" position="replace">
+            <button
+                    class="accordion-button collapsed fw-medium"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#customizable_item"
+                    aria-expanded="false"
+                    aria-controls="customizable_item"
+            >
+                <strong>More Information</strong>
+            </button>
+        </xpath>
+    </template>
+
+
+    <template id="custom_alternative_products" inherit_id="website_sale.alternative_products"
+              name="Alternative Products with Title">
+        <xpath expr="//div[@id='oe_structure_website_sale_recommended_products']" position="before">
+            <t t-if="product.alternative_product_ids">
+                <div class="container mb-3">
+                    <t t-translation="Produits similaires">
+                        <h3 class="fw-bold">Similar products</h3>
+                    </t>
+                </div>
+            </t>
+        </xpath>
+    </template>
+
+
+</odoo>

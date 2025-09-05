@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="sale_order_template_view_form_inherit" model="ir.ui.view">
+        <field name="name">sale.order.template.form.inherit</field>
+        <field name="model">sale.order.template</field>
+        <field name="inherit_id" ref="sale_management.sale_order_template_view_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//page[@name='terms_and_conditions']" position="after">
+
+<!--                <page string="Pied de page" name="pied_de_page">-->
+<!--                    <field name="pied_page" nolabel="1"-->
+<!--                           placeholder="Ajoutez ici un pied de page personnalisé pour le devis."/>-->
+<!--                </page>-->
+            </xpath>
+        </field>
+    </record>
+</odoo>

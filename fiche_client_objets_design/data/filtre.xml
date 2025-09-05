@@ -1,0 +1,55 @@
+<odoo>
+    <record id="filter_partner_gold_vip_dynamic" model="ir.filters">
+        <field name="name">Mes clients Gold VIP</field>
+        <field name="model_id">res.partner</field>
+        <field name="domain">[('gold_vip','=',True)]</field>
+        <field name="context">{}</field>
+        <field name="user_id" eval="False"/>
+    </record>
+    <record id="filter_active_clients_by_zone" model="ir.filters">
+        <field name="name">Clients actifs par zone</field>
+        <field name="model_id">res.partner</field>
+        <field name="domain">[('active','=',True),('zone','!=',False)]</field>
+        <field name="context">{}</field> <field name="user_id" eval="False"/>
+    </record>
+    <record id="filter_special_conditions" model="ir.filters">
+        <field name="name">Clients avec conditions particulières</field>
+        <field name="model_id">res.partner</field>
+        <field name="domain">[('special_conditions','=',True)]</field>
+        <field name="context">{}</field>
+        <field name="user_id" eval="False"/> </record>
+    <record id="filter_prospects_by_product" model="ir.filters">
+        <field name="name">Prospects par produit</field>
+        <field name="model_id">res.partner</field>
+        <field name="domain">[('produits','!=',False)]</field>
+        <field name="context">{}</field>
+        <field name="user_id" eval="False"/>
+    </record>
+    <record id="filter_prospects_textile" model="ir.filters">
+        <field name="name">Prospects - Textile</field>
+        <field name="model_id">res.partner</field>
+        <field name="domain">[('produits','=','textile')]</field>
+        <field name="context">{}</field>
+        <field name="user_id" eval="False"/>
+    </record>
+    <record id="filter_prospects_maroquinerie" model="ir.filters">
+        <field name="name">Prospects - Maroquinerie</field>
+        <field name="model_id">res.partner</field>
+        <field name="domain">[('produits','=','maroquinerie')]</field>
+        <field name="context">{}</field> <field name="user_id" eval="False"/>
+    </record>
+    <record id="filter_prospects_electronique" model="ir.filters">
+        <field name="name">Prospects - Électronique</field>
+        <field name="model_id">res.partner</field>
+        <field name="domain">[('produits','=','electronique')]</field>
+        <field name="context">{}</field>
+        <field name="user_id" eval="False"/>
+    </record>
+    <record id="filter_prospects_ceramique" model="ir.filters">
+        <field name="name">Prospects - Céramique</field>
+        <field name="model_id">res.partner</field>
+        <field name="domain">[('produits','=','ceramique')]</field>
+        <field name="context">{}</field>
+        <field name="user_id" eval="False"/>
+    </record>
+</odoo>

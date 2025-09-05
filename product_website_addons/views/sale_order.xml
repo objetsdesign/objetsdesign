@@ -1,0 +1,29 @@
+<odoo>
+    <record id="view_order_form_inherit_conditions" model="ir.ui.view">
+        <field name="name">sale.order.form.conditions</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='order_line']/list/field[@name='product_template_id']" position="before">
+                <field name="print_in_quote"/>
+            </xpath>
+            <xpath expr="//sheet/notebook" position="inside">
+                <page string="Conditions Commerciales">
+                    <group>
+                        <field name="tech_doc"/>
+                        <field name="delivery_info"/>
+                        <field name="payment_info"/>
+                        <field name="validity_info"/>
+                        <field name="delay_info"/>
+                        <field name="inspection_info"/>
+                        <field name="address_china"/>
+                        <field name="address_tunisia"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+
+
+</odoo>

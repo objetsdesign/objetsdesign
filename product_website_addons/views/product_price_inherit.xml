@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <template id="product_inherit" inherit_id="website_sale.product">
+        <xpath expr="//h1[@t-field='product.name']" position="after">
+            <t t-if="product_variant.default_code">
+                <div class="mt-2" style="font-size: 13px; color: #555; font-weight: normal">
+                    <strong>SKU:</strong>
+                    <t t-esc="product_variant.default_code"/>
+                </div>
+            </t>
+        </xpath>
+    </template>
+
+    <template id="product_price_inherit" inherit_id="website_sale.product_price">
+        <xpath expr="//span[hasclass('oe_price')]" position="replace">
+
+            <span class="oe_price" style="white-space: nowrap; font-size: 18px; font-weight: bold;">
+                Recommended retail price :
+                <span t-out="combination_info['price']"
+                      t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
+            </span>
+        </xpath>
+
+        <xpath expr="//span[hasclass('oe_price')]" position="after">
+            <t t-set="pricelist_items"
+               t-value="request.env['product.pricelist.item'].search([('applied_on', '=', '1_product'), ('product_tmpl_id', '=', product.id)], order='min_quantity asc')"/>
+            <t t-if="pricelist_items and not request.env.user._is_public()">
+                <div class="mt-2">
+                    <div class="mt-2" style="font-size: 18px; font-weight: bold">
+                        <t t-translation="Prix Professionnel :">Professional Price :</t>
+                    </div>
+                    <div class="d-flex flex-wrap gap-3 mt-2">
+                        <t t-foreach="pricelist_items" t-as="pricelist">
+                            <div class="p-3 text-center shadow-sm rounded"
+                                 style="min-width: 100px; max-width: 150px; height: 60px; border: 1px solid black !important; border-radius: 8px;"
+                            >
+                                <div style="font-size: 17px; font-weight: bold; color: black;">
+                                    <t t-esc="pricelist.fixed_price"/>
+                                    €
+                                </div>
+                                <div style="font-size: 14px; color: gray; font-weight: normal; padding-bottom: 8px !important;">
+                                    <t t-esc="int(pricelist.min_quantity)"/>
+                                    +pcs
+                                </div>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+            </t>
+
+        </xpath>
+    </template>
+
+
+</odoo>
