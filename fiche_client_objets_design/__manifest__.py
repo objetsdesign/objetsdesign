@@ -3,7 +3,7 @@
         'version': '1.0',
         'summary': 'Modification au niveau de fiche client suivant le besoin',
         'author': 'VON ROSS',
-        'depends': ['sale','base','web'],
+        'depends': ['base', 'contacts', 'sale', 'account', 'purchase','web'],
         'data': [
             'security/ir.model.access.csv',
             'data/filtre.xml',
